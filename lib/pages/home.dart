@@ -1,7 +1,9 @@
+// lib/pages/home.dart
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 import '../models/campaign_model.dart';
 import '../models/center_model.dart';
+import '../database/centers_data.dart';
 import 'campaign_detail_page.dart';
 import 'center_detail_page.dart';
 
@@ -13,7 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Dados mockados
   final List<CampaignModel> campaigns = [
     CampaignModel(
       title: "Campanha do\nAgasalho",
@@ -27,51 +28,26 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  final List<DonationCenterModel> centers = [
-    DonationCenterModel(
-      name: "Centro de Doação Hermes",
-      address: "Rua X",
-      hours: "07:00 às 19:00",
-      image: "assets/center1.jpg",
-    ),
-    DonationCenterModel(
-      name: "Fraternidade Espírita\nIrmão Glacus",
-      address: "Av Y",
-      hours: "08:00 às 20:00",
-      image: "assets/center2.jpg",
-    ),
-    DonationCenterModel(
-      name: "Centro de Doação Hermes",
-      address: "Rua Z",
-      hours: "07:00 às 19:00",
-      image: "assets/center3.jpg",
-    ),
-  ];
-
   int currentBanner = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Fundo azul para aparecer atrás dos cantos arredondados da parte branca
       backgroundColor: AppColors.headerBlue,
       
       body: Column(
         children: [
-          // Header (Logo)
           _buildCustomHeader(),
 
-          // Expanded contendo a parte branca com cantos arredondados
           Expanded(
             child: Container(
               decoration: const BoxDecoration(
-                color: AppColors.background, // Cor do fundo da lista (Snow/Cinza claro)
+                color: AppColors.background,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30), // Arredondamento esquerdo superior
-                  topRight: Radius.circular(30), // Arredondamento direito superior
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
               ),
-              // ClipRRect garante que o conteúdo (ListView) respeite as bordas arredondadas
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
@@ -80,9 +56,8 @@ class _HomePageState extends State<HomePage> {
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
-                    const SizedBox(height: 25), // Espaço interno do topo arredondado
+                    const SizedBox(height: 25),
                     
-                    // Título Campanhas
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
@@ -97,7 +72,6 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 15),
 
-                    // ---- Carousel Customizado ----
                     SizedBox(
                       height: 190,
                       child: PageView.builder(
@@ -112,7 +86,6 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 10),
 
-                    // Indicadores (Dots)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
@@ -133,7 +106,6 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 25),
                     
-                    // Título Centros
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
@@ -148,14 +120,13 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 15),
 
-                    // ---- Lista de Centros ----
                     ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: centers.length,
+                      itemCount: centersData.length,
                       itemBuilder: (context, index) {
-                        return _buildCenterCard(centers[index]);
+                        return _buildCenterCard(centersData[index]);
                       },
                     ),
                     
@@ -186,7 +157,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Header Azul
   Widget _buildCustomHeader() {
     return Container(
       width: double.infinity,
@@ -210,11 +180,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Card do Banner
   Widget _buildBannerCard(CampaignModel campaign) {
     return GestureDetector(
       onTap: () {
-        // Direciona para a página real de detalhes da campanha
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -278,7 +246,8 @@ class _HomePageState extends State<HomePage> {
               child: Image.asset(
                 campaign.image,
                 fit: BoxFit.contain,
-                errorBuilder: (c, o, s) => const Icon(Icons.checkroom, size: 80, color: Colors.white24),
+                errorBuilder: (c, o, s) =>
+                    const Icon(Icons.checkroom, size: 80, color: Colors.white24),
               ),
             ),
           ],
@@ -287,11 +256,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Card do Centro
-  Widget _buildCenterCard(DonationCenterModel center) {
+  Widget _buildCenterCard(CenterDetailModel center) {
     return GestureDetector(
       onTap: () {
-        // Direciona para a página real de detalhes do centro
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -300,7 +267,7 @@ class _HomePageState extends State<HomePage> {
         );
       },
       child: Container(
-        color: Colors.transparent, // Área clicável
+        color: Colors.transparent,
         margin: const EdgeInsets.only(bottom: 20),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,7 +290,6 @@ class _HomePageState extends State<HomePage> {
                 child: Image.asset(
                   center.image,
                   fit: BoxFit.cover,
-                  errorBuilder: (c, o, s) => Container(color: Colors.grey[300]),
                 ),
               ),
             ),
@@ -355,9 +321,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                       children: [
                         const TextSpan(text: "Horário de funcionamento: "),
-                        TextSpan(text: "${center.hours} "),
+                        TextSpan(text: center.hours),
                         const TextSpan(
-                          text: "Aberto",
+                          text: "  Aberto",
                           style: TextStyle(
                             color: AppColors.statusOpen,
                             fontWeight: FontWeight.bold,
