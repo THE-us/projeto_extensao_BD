@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Cores Base
+  // Cores Base (Tema Azul/Cinza)
   static const Color background = Color(0xFFF5F7FA); // Fundo cinza bem claro
   static const Color headerBlue = Color(0xFF7CA9C6); // Azul do topo (logo)
   static const Color bannerBlue = Color(0xFF2E6B8E); // Azul escuro do banner
   
+  // Cores Específicas da Tela "Precisa de Ajuda" (Identidade da Imagem)
+  static const Color feigBrown = Color(0xFF3B2314); // Marrom escuro do logo/botão
+  static const Color inputBorder = Color(0xFFE0E0E0); // Cinza claro para bordas dos inputs
+
   // Textos
   static const Color textPrimary = Color(0xFF1A1A1A); // Preto suave
   static const Color textSecondary = Color(0xFF757575); // Cinza para horários

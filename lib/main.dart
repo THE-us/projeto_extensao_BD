@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/home.dart'; // Certifique-se que o arquivo da home tem esse nome
 import 'utils/app_colors.dart';
+import 'pages/receptor/requisicao.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: HelpRequestPage(),
     );
   }
 }
