@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 import '../models/campaign_model.dart';
+import '../models/center_model.dart'; 
+import '../database/centers_data.dart'; 
 import '../models/center_model.dart';
 import '../database/centers_data.dart';
 import 'campaign_detail_page.dart';
@@ -15,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Dados das Campanhas (Banner Superior)
   final List<CampaignModel> campaigns = [
     CampaignModel(
       title: "Campanha do\nAgasalho",
@@ -72,6 +75,7 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 15),
 
+                    // Carrossel de Banners
                     SizedBox(
                       height: 190,
                       child: PageView.builder(
@@ -86,6 +90,7 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 10),
 
+                    // Indicadores (Bolinhas) do Carrossel
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
@@ -120,13 +125,15 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 15),
 
+                    // Lista de Centros de Doação
                     ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: centersData.length,
                       itemBuilder: (context, index) {
-                        return _buildCenterCard(centersData[index]);
+                        // MUDANÇA AQUI: Passamos o índice para o método construtor
+                        return _buildCenterCard(index);
                       },
                     ),
                     
@@ -256,12 +263,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // MUDANÇA: Agora recebe o ÍNDICE, não o objeto direto
+  Widget _buildCenterCard(int index) {
+    // Pegamos o objeto da lista global para desenhar o card
+    final center = centersData[index];
+
   Widget _buildCenterCard(CenterDetailModel center) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
+            // MUDANÇA: Passamos o centerIndex para a página de detalhes
+            builder: (context) => CenterDetailPage(centerIndex: index),
             builder: (context) => CenterDetailPage(center: center),
           ),
         );
@@ -290,6 +304,13 @@ class _HomePageState extends State<HomePage> {
                 child: Image.asset(
                   center.image,
                   fit: BoxFit.cover,
+                  // Adicionei tratamento de erro para não quebrar se a imagem faltar
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.image_not_supported, color: Colors.grey),
+                    );
+                  },
                 ),
               ),
             ),

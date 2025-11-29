@@ -3,6 +3,12 @@
 class CenterDetailModel {
   final String name;
   final String address;
+  final String phone;
+  final String description;
+  
+  // Estes são os campos que estavam faltando e causavam o erro:
+  final String image; 
+  final String hours;
   final String hours;
   final String image;
   final String description;
@@ -13,6 +19,10 @@ class CenterDetailModel {
   CenterDetailModel({
     required this.name,
     required this.address,
+    required this.phone,
+    required this.description,
+    required this.image,
+    required this.hours,
     required this.hours,
     required this.image,
     required this.description,
