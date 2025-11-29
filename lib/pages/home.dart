@@ -4,6 +4,8 @@ import '../utils/app_colors.dart';
 import '../models/campaign_model.dart';
 import '../models/center_model.dart'; 
 import '../database/centers_data.dart'; 
+import '../models/center_model.dart';
+import '../database/centers_data.dart';
 import 'campaign_detail_page.dart';
 import 'center_detail_page.dart';
 
@@ -266,6 +268,7 @@ class _HomePageState extends State<HomePage> {
     // Pegamos o objeto da lista global para desenhar o card
     final center = centersData[index];
 
+  Widget _buildCenterCard(CenterDetailModel center) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -273,6 +276,7 @@ class _HomePageState extends State<HomePage> {
           MaterialPageRoute(
             // MUDANÇA: Passamos o centerIndex para a página de detalhes
             builder: (context) => CenterDetailPage(centerIndex: index),
+            builder: (context) => CenterDetailPage(center: center),
           ),
         );
       },
